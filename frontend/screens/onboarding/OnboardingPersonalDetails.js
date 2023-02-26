@@ -8,11 +8,15 @@ import {
   TextInput,
   Button,
   Image,
+  StatusBar,
 } from "react-native";
 import Header from "../../components/Header";
 import axios from "axios";
 import colors from "../../config/colors";
 import { useAuth } from "../../context/AuthContext";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import globalStyles from "../../config/globalStyles";
 
 const OnboardingPersonalDetails = ({ navigation }) => {
   const [firstName, setFirstName] = useState("");
@@ -25,27 +29,44 @@ const OnboardingPersonalDetails = ({ navigation }) => {
       first_name: firstName,
       last_name: lastName,
     });
+    navigation.navigate("OnboardingInterests");
   };
 
   return (
-    <SafeAreaView>
-      <Header title="Coreer" />
-      <Text style={styles.text}>Personal Details</Text>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        marginTop: StatusBar.currentHeight,
+        paddingHorizontal: 24,
+      }}
+    >
+      <Pressable onPress={() => authContext.signOut()}>
+        <FontAwesomeIcon
+          icon={faArrowLeft}
+          style={{ marginTop: 24 }}
+          size={24}
+        />
+      </Pressable>
+
       <View style={styles.form}>
-        <TextInput
-          onChangeText={setFirstName}
-          value={firstName}
-          placeholder="First name"
-          style={styles.input}
-        />
-        <TextInput
-          onChangeText={setLastName}
-          value={lastName}
-          placeholder="Last name"
-          style={styles.input}
-        />
+        <View style={{ flex: 1 }}>
+          <Text style={styles.text}>Personal Details</Text>
+          <TextInput
+            onChangeText={setFirstName}
+            value={firstName}
+            placeholder="First name"
+            style={[styles.input, globalStyles.shadowProp]}
+          />
+          <TextInput
+            onChangeText={setLastName}
+            value={lastName}
+            placeholder="Last name"
+            style={[styles.input, globalStyles.shadowProp]}
+          />
+        </View>
+
         <Pressable style={styles.button} onPress={handlePress}>
-          <Text style={styles.buttonText}>Get Started</Text>
+          <Text style={styles.buttonText}>Continue</Text>
         </Pressable>
       </View>
     </SafeAreaView>
@@ -69,19 +90,19 @@ const styles = StyleSheet.create({
     marginTop: 32,
   },
   text: {
-    textAlign: "center",
-    fontWeight: "bold",
-    fontSize: 32,
-    marginTop: 24,
+    fontSize: 24,
+
+    // fontFamily: "RalewayBold",
+    marginBottom: 24,
   },
   form: {
-    paddingHorizontal: 16,
-    marginTop: 24,
+    marginTop: 40,
+    flex: 1,
   },
   input: {
     backgroundColor: "#fff",
     height: 50,
-    borderWidth: 1,
+    borderWidth: 0.5,
     borderRadius: 10,
     paddingHorizontal: 20,
     color: colors.grey,
@@ -91,16 +112,17 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: colors.primary,
-    borderRadius: 10,
+
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 12,
+    paddingVertical: 16,
     paddingHorizontal: 32,
-    borderRadius: 10,
+    borderRadius: 100,
+    marginBottom: 24,
   },
   buttonText: {
     color: "#fff",
-    fontWeight: "bold",
+    fontSize: 16,
   },
 });
 
